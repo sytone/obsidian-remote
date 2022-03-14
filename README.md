@@ -15,7 +15,7 @@ docker run --rm -it -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 ghcr.io/syt
 To run it as a daemon.
 
 ```PowerShell
-docker run -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 ghcr.io/sytone/obsidian-remote:latest
+docker run -d -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 --name obsidian-remote ghcr.io/sytone/obsidian-remote:latest
 ```
 
 ## Building locally
