@@ -9,13 +9,13 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 To run a interactive version to test it out.
 
 ```PowerShell
-docker run --rm -it -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 ghcr.io/sytone/obsidian-remote:latest
+docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 ghcr.io/sytone/obsidian-remote:latest
 ```
 
 To run it as a daemon.
 
 ```PowerShell
-docker run -d -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 --name obsidian-remote ghcr.io/sytone/obsidian-remote:latest
+docker run -d -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 --name obsidian-remote ghcr.io/sytone/obsidian-remote:latest
 ```
 
 ## Building locally
@@ -29,5 +29,5 @@ docker --debug --log-level debug build --progress plain --pull --rm -f "DockerFi
 To run the localy build image:
 
 ```PowerShell
-docker run --rm -it -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 obsidian-remote:latest bash
+docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 obsidian-remote:latest bash
 ```
