@@ -16,4 +16,5 @@ fi
 # permissions
 chown -R abc:abc \
     /config \
-    /vaults
+    /vaults \
+    /squashfs-root

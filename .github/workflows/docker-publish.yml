@@ -7,7 +7,7 @@ name: Docker
 
 on:
   push:
-    branches: [main]
+    # branches: [main]
     # Publish semver tags as releases.
     tags: ['v*.*.*']
 
@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%S')"
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -36,3 +40,6 @@ jobs:
           #file: ./Dockerfile
           push: true # Will only build if this is not here
           tags: ghcr.io/${{ github.repository_owner }}/obsidian-remote:latest
+          build-args: |
+            "BUILD_DATE=${{ steps.date.outputs.date }}"
+            "IMAGE_VERSION=${{ env.GITHUB_REF_NAME }}"

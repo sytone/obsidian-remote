@@ -23,7 +23,7 @@ docker run -d -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -
 To build and use it locally run the following commands:
 
 ```PowerShell
-docker --debug --log-level debug build --progress plain --pull --rm -f "DockerFile" -t obsidian-remote:latest "."
+docker build --pull --rm --build-arg BUILD_DATE=$(date -uformat +"%Y%m%d") -f "Dockerfile" -t obsidian-remote:latest "."
 ```
 
 To run the localy build image:
