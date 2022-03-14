@@ -31,3 +31,20 @@ To run the localy build image:
 ```PowerShell
 docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 obsidian-remote:latest bash
 ```
+
+## Using Docker Compose
+
+```YAML
+version: '3.8'
+services:
+  obsidian:
+    image: 'ghcr.io/sytone/obsidian-remote:latest'
+    container_name: obsidian-remote
+    restart: unless-stopped
+    ports:
+      - 8585:8080
+    volumes:
+      - /home/obsidian/vaults:/vaults
+      - /home/obsidian/config:/config/.config/obsidian
+
+```

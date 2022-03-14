@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+
+if [ -n "$PASSWORD" ]; then
+    echo "abc:${PASSWORD}" | chpasswd
+    echo "**** Setting password from environment variable. ****"
+else
+    echo "**** No auth enabled. To enable auth, you can set the PASSWORD var in docker arguments. ****"
+fi
+
+
+if [ ! -d /vaults ]; then
+    echo "**** Creating vaults folder. ****"
+    mkdir -p /vaults;
+fi
+
+# permissions
+chown -R abc:abc \
+    /config \
+    /vaults
