@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+    <menu id="root-menu" label="MENU">
+        <item label="Calibre GUI">
+            <action name="Execute">
+                <command>/squashfs-root/obsidian --no-sandbox </command>
+            </action>
+        </item>
+        <item label="xterm" icon="/usr/share/pixmaps/xterm-color_48x48.xpm">
+            <action name="Execute">
+                <command>/usr/bin/xterm</command>
+            </action>
+        </item>
+        <item label="Reload OB">
+            <action name="Reconfigure" />
+        </item>
+    </menu>
+</openbox_menu>
