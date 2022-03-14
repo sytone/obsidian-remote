@@ -26,7 +26,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Docker Image
@@ -35,4 +35,4 @@ jobs:
           context: .
           #file: ./Dockerfile
           push: true # Will only build if this is not here
-          tags: sytone/obsidian-remote:latest
+          tags: ghcr.io/${{ github.repository_owner }}/obsidian-remote:latest
