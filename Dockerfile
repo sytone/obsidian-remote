@@ -44,7 +44,4 @@ COPY root/ /
 EXPOSE 8080
 VOLUME ["/config","/vaults"]
 
-# Build:
-#  docker --debug --log-level debug build --progress plain --pull --rm -f "DockerFile" -t obsidian-remote:latest "."
-# Run:
-#  docker run --rm -it -v D:/repos/obsidian/vaults:/vaults -p 8080:8080 obsidian-remote:latest bash
+
