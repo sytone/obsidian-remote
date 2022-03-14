@@ -20,20 +20,21 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build and Publish latest Docker image
-        uses: VaultVulp/gp-docker-action@1.2.0
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-          image-name: obsidian-remote
-          dockerfile: Dockerfile
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          push: true # Will only build if this is not here
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ github.ref }}
+            ghcr.io/${{ github.repository }}:latest
