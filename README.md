@@ -6,24 +6,38 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 
 ## Using Container
 
-To run a interactive version to test it out.
+To run a interactive version to test it out. This is using windows based path, update for the OS you are running on.
 
 ```PowerShell
-docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 ghcr.io/sytone/obsidian-remote:latest
+docker run --rm -it `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config/.config/obsidian `
+  -p 8080:8080 `
+  ghcr.io/sytone/obsidian-remote:latest
 ```
 
 To run it as a daemon.
 
 ```PowerShell
-docker run -d -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 --name obsidian-remote ghcr.io/sytone/obsidian-remote:latest
+docker run -d `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config/.config/obsidian `
+  -p 8080:8080 `
+  ghcr.io/sytone/obsidian-remote:latest
 ```
 
-Docker Environment Parameters
+## Setting PUID and PGID
 
 To set PUID and PGID use the follow environment variables on the command line, by default the IDs are 911/911 
 
 ```PowerShell
-docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -e PUID=1000 -e PGID=1000 -p 8080:8080 ghcr.io/sytone/obsidian-remote:latest
+docker run --rm -it `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config/.config/obsidian `
+  -e PUID=1000 `
+  -e PGID=1000 `
+  -p 8080:8080 `
+  ghcr.io/sytone/obsidian-remote:latest
 ```
 
 Or, if you use docker-compose, add them to the environment: section:
@@ -45,13 +59,21 @@ id $user
 To build and use it locally run the following commands:
 
 ```PowerShell
-docker build --pull --rm --build-arg BUILD_DATE=$(date -uformat +"%Y%m%d") -f "Dockerfile" -t obsidian-remote:latest "."
+docker build --pull --rm --build-arg `
+  BUILD_DATE=$(date -uformat +"%Y%m%d") `
+  -f "Dockerfile" `
+  -t obsidian-remote:latest `
+  "."
 ```
 
 To run the localy build image:
 
 ```PowerShell
-docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 obsidian-remote:latest bash
+docker run --rm -it `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config/.config/obsidian `
+  -p 8080:8080 `
+  obsidian-remote:latest bash
 ```
 
 ## Using Docker Compose
