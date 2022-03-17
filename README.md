@@ -18,6 +18,28 @@ To run it as a daemon.
 docker run -d -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -p 8080:8080 --name obsidian-remote ghcr.io/sytone/obsidian-remote:latest
 ```
 
+Docker Environment Parameters
+
+To set PUID and PGID use the follow environment variables on the command line, by default the IDs are 911/911 
+
+```PowerShell
+docker run --rm -it -v D:/ob/vaults:/vaults -v D:/ob/config:/config/.config/obsidian -e PUID=1000 -e PGID=1000 -p 8080:8080 ghcr.io/sytone/obsidian-remote:latest
+```
+
+Or, if you use docker-compose, add them to the environment: section:
+
+```yaml
+environment:
+  - PUID=1000
+  - PGID=1000
+```
+
+It is most likely that you will use the id of yourself, which can be obtained by running the command below. The two values you will be interested in are the uid and gid.
+
+```powershell
+id $user
+```
+
 ## Building locally
 
 To build and use it locally run the following commands:
