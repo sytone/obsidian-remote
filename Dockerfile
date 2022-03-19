@@ -7,36 +7,36 @@ LABEL org.opencontainers.image.description="Hosted Obsidian instance allowing ac
 
 RUN \
     echo "**** install packages ****" && \
-    # Update and install extra packages.
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-    # Packages needed to download and extract obsidian.
-    curl \
-    libnss3 \
-    # Install Chrome dependencies.
-    dbus-x11 \
-    uuid-runtime && \
+        # Update and install extra packages.
+        apt-get update && \
+        apt-get install -y --no-install-recommends \
+            # Packages needed to download and extract obsidian.
+            curl \
+            libnss3 \
+            # Install Chrome dependencies.
+            dbus-x11 \
+            uuid-runtime && \
     echo "**** cleanup ****" && \
-    apt-get autoclean && \
-    rm -rf \
-    /var/lib/apt/lists/* \
-    /var/tmp/* \
-    /tmp/*
+        apt-get autoclean && \
+        rm -rf \
+        /var/lib/apt/lists/* \
+        /var/tmp/* \
+        /tmp/*
 
 # set version label
 ARG OBSIDIAN_VERSION=0.13.31
 
 RUN \
     echo "**** download obsidian ****" && \
-    curl \
-    https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-$OBSIDIAN_VERSION.AppImage \
-    -L \
-    -o obsidian.AppImage
+        curl \
+        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-$OBSIDIAN_VERSION.AppImage \
+        -L \
+        -o obsidian.AppImage
 
 RUN \
     echo "**** extract obsidian ****" && \
-    chmod +x /obsidian.AppImage && \
-    /obsidian.AppImage --appimage-extract
+        chmod +x /obsidian.AppImage && \
+        /obsidian.AppImage --appimage-extract
 
 ENV \
     CUSTOM_PORT="8080" \
