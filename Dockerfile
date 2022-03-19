@@ -1,14 +1,10 @@
 FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal
 
 # set version label
-ARG BUILD_DATE=unknown
-ARG IMAGE_VERSION
 ARG OBSIDIAN_VERSION=0.13.31
 
 LABEL org.opencontainers.image.authors="github@sytone.com"
-LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.source="https://github.com/sytone/obsidian-remote"
-LABEL org.opencontainers.image.version="${IMAGE_VERSION}"
 LABEL org.opencontainers.image.title="Container hosted Obsidian MD"
 LABEL org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
 
