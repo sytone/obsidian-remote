@@ -28,7 +28,7 @@ docker run -d `
 
 ## Setting PUID and PGID
 
-To set PUID and PGID use the follow environment variables on the command line, by default the IDs are 911/911 
+To set PUID and PGID use the follow environment variables on the command line, by default the IDs are 911/911
 
 ```PowerShell
 docker run --rm -it `
@@ -59,8 +59,7 @@ id $user
 To build and use it locally run the following commands:
 
 ```PowerShell
-docker build --pull --rm --build-arg `
-  BUILD_DATE=$(date -uformat +"%Y%m%d") `
+docker build --pull --rm `
   -f "Dockerfile" `
   -t obsidian-remote:latest `
   "."
@@ -90,5 +89,8 @@ services:
     volumes:
       - /home/obsidian/vaults:/vaults
       - /home/obsidian/config:/config/.config/obsidian
+    environment:
+      - PUID=1000
+      - PGID=1000
 
 ```

@@ -1,8 +1,5 @@
 FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal
 
-# set version label
-ARG OBSIDIAN_VERSION=0.13.31
-
 LABEL org.opencontainers.image.authors="github@sytone.com"
 LABEL org.opencontainers.image.source="https://github.com/sytone/obsidian-remote"
 LABEL org.opencontainers.image.title="Container hosted Obsidian MD"
@@ -25,6 +22,9 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/* \
     /tmp/*
+
+# set version label
+ARG OBSIDIAN_VERSION=0.13.31
 
 RUN \
     echo "**** download obsidian ****" && \
