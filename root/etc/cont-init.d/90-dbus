@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+
+# Generate machine-id
+rm /etc/machine-id > /dev/null 2>&1 || true
+dbus-uuidgen > /var/lib/dbus/machine-id
+ln -s /var/lib/dbus/machine-id /etc/machine-id
+
+# Ensure pid file is removed
+rm /var/run/dbus/pid > /dev/null 2>&1 || true
+
+# Ensure directory structure is present
+mkdir -p /var/run/dbus
+
+# Ensure messagebus user exists
+if ! id "messagebus" &>/dev/null; then
+    useradd -r --no-create-home -U messagebus
+fi

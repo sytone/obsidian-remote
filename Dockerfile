@@ -14,10 +14,15 @@ LABEL org.opencontainers.image.description="Hosted Obsidian instance allowing ac
 
 RUN \
     echo "**** install packages ****" && \
+    # Update and install extra packages.
     apt-get update && \
-    apt-get install --no-install-recommends -y \
+    apt-get install -y --no-install-recommends \
+    # Packages needed to download and extract obsidian.
     curl \
-    libnss3 && \
+    libnss3 \
+    # Install Chrome dependencies.
+    dbus-x11 \
+    uuid-runtime && \
     echo "**** cleanup ****" && \
     apt-get autoclean && \
     rm -rf \
@@ -40,7 +45,8 @@ RUN \
 ENV \
     CUSTOM_PORT="8080" \
     GUIAUTOSTART="true" \
-    HOME="/vaults"
+    HOME="/vaults" \
+    TITLE="Obsidian v$OBSIDIAN_VERSION"
 
 # add local files
 COPY root/ /
