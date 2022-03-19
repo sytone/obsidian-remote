@@ -82,6 +82,43 @@ It is most likely that you will use the id of yourself, which can be obtained by
 id $user
 ```
 
+## Hosting behind a reverse proxy
+
+If you whish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled. 
+
+### Example nginx configuration
+
+This is an example, I recommend a SSL based proxy and some sort of authentication.
+
+```
+server {
+  set $forward_scheme http;
+  set $server         "10.10.10.10";
+  set $port           8080;
+
+  listen 80;
+  server_name ob.mycooldomain.com;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection $http_connection;
+  proxy_http_version 1.1;
+  access_log /data/logs/ob_access.log proxy;
+  error_log /data/logs/ob_error.log warn;
+  location / {
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_http_version 1.1;
+    # Proxy!
+    add_header       X-Served-By $host;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Scheme $scheme;
+    proxy_set_header X-Forwarded-Proto  $scheme;
+    proxy_set_header X-Forwarded-For    $remote_addr;
+    proxy_set_header X-Real-IP          $remote_addr;
+    proxy_pass       $forward_scheme://$server:$port$request_uri;
+  }
+}
+```
+
 ## Building locally
 
 To build and use it locally run the following commands:
