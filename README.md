@@ -46,6 +46,27 @@ Port 8080 is mapped by default to the web interface.
 | TZ                   | Set the Time Zone for the container, should match your TZ. `Etc/UTC` by default. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options. |
 | DOCKER_MODS          | Use to add mods to the container like git. E.g. `DOCKER_MODS=linuxserver/mods:universal-git` See [Docker Mods](https://github.com/linuxserver/docker-mods) for details.                                |
 
+## Using Docker Compose
+
+```YAML
+version: '3.8'
+services:
+  obsidian:
+    image: 'ghcr.io/sytone/obsidian-remote:latest'
+    container_name: obsidian-remote
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - /home/obsidian/vaults:/vaults
+      - /home/obsidian/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - DOCKER_MODS=linuxserver/mods:universal-git
+```
+
 ## Enabling GIT for the obsidian-git plugin
 
 This container uses the base images from linuxserver.io. This means you can the linuxserver.io mods. To add support for git add the `DOCKER_MODS` environment variable like so `DOCKER_MODS=linuxserver/mods:universal-git`.
@@ -151,24 +172,4 @@ docker run --rm -it `
   -v D:/ob/config:/config `
   -p 8080:8080 `
   obsidian-remote:latest bash
-```
-
-## Using Docker Compose
-
-```YAML
-version: '3.8'
-services:
-  obsidian:
-    image: 'ghcr.io/sytone/obsidian-remote:latest'
-    container_name: obsidian-remote
-    restart: unless-stopped
-    ports:
-      - 8585:8080
-    volumes:
-      - /home/obsidian/vaults:/vaults
-      - /home/obsidian/config:/config
-    environment:
-      - PUID=1000
-      - PGID=1000
-
 ```
