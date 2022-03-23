@@ -26,12 +26,25 @@ docker run -d `
   ghcr.io/sytone/obsidian-remote:latest
 ```
 
+### Ports
+
+Port 8080 is mapped by default to the web interface.
+
 ### Mapped Volumes
 
 | Path      | Description                                                               |
 | --------- | ------------------------------------------------------------------------- |
 | `/vaults` | The location on the host for your Obsidian Vaults                         |
 | `/config` | The location to store Obsidan configuration and ssh data for obsidian-git |
+
+### Environment Variables
+
+| Environment Variable | Description                                                                                                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| PUID                 | Set the user ID for the container user. `911` by default.                                                                                                                                              |
+| PGID                 | Set the group ID for the continer user. `911` by default.                                                                                                                                              |
+| TZ                   | Set the Time Zone for the container, should match your TZ. `Etc/UTC` by default. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options. |
+| DOCKER_MODS          | Use to add mods to the container like git. E.g. `DOCKER_MODS=linuxserver/mods:universal-git` See [Docker Mods](https://github.com/linuxserver/docker-mods) for details.                                |
 
 ## Enabling GIT for the obsidian-git plugin
 
@@ -84,7 +97,7 @@ id $user
 
 ## Hosting behind a reverse proxy
 
-If you whish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled. 
+If you whish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled.
 
 ### Example nginx configuration
 
