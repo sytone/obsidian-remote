@@ -13,6 +13,20 @@ if [ ! -d /vaults ]; then
     mkdir -p /vaults;
 fi
 
+echo "********************************"
+echo "**** Start Date Information ****"
+echo "TZ: ${TZ}"
+echo "Date UTC"
+date --utc
+echo "Date Local"
+date
+echo "Zone Info"
+zdump /usr/share/zoneinfo/${TZ}
+echo "Time Zone Offsets"
+zdump -v /etc/localtime
+echo "****  End Date Information  ****"
+echo "********************************"
+
 # permissions
 chown -R abc:abc \
     /config \
