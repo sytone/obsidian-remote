@@ -28,7 +28,11 @@ docker run -d `
 
 ### Ports
 
-Port 8080 is mapped by default to the web interface.
+| Port  | Description                             |
+| ----- | --------------------------------------- |
+| 8080  | Obsidian Web Interface                  |
+| 27123 | Local REST API Plugin HTTP Server Port  |
+| 27124 | Local REST API Plugin HTTPS Server Port |
 
 ### Mapped Volumes
 

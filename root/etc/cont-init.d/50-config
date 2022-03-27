@@ -14,7 +14,12 @@ if [ ! -d /vaults ]; then
 fi
 
 echo "********************************"
+echo "****   Debug Information    ****"
+echo "********************************"
+echo ""
+echo "********************************"
 echo "**** Start Date Information ****"
+echo "********************************"
 echo "TZ: ${TZ}"
 echo "Date UTC"
 date --utc
@@ -24,6 +29,7 @@ echo "Zone Info"
 zdump /usr/share/zoneinfo/${TZ}
 echo "Time Zone Offsets"
 zdump -v /etc/localtime
+echo "********************************"
 echo "****  End Date Information  ****"
 echo "********************************"
 
