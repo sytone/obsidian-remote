@@ -7,9 +7,8 @@ name: Docker
 
 on:
   push:
-    # branches: [main]
-    # Publish semver tags as releases.
-    tags: ['v*.*.*']
+    branches: [main]
+
 
 jobs:
   build:
@@ -23,17 +22,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ghcr.io/${{ github.repository_owner }}/obsidian-remote
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -45,14 +33,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3.1.1
         with:
           context: .
-          #file: ./Dockerfile
-          push: true # Will only build if this is not here
-          #tags: ghcr.io/${{ github.repository_owner }}/obsidian-remote:latest
-          # build-args: |
-          #   "BUILD_DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}"
-          #   "IMAGE_VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}"
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          file: ./Dockerfile
