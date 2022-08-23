@@ -27,8 +27,8 @@ RUN \
 
 # set version label
 ARG OBSIDIAN_VERSION
-
-ENV OBSIDIAN_VERSION ${OBSIDIAN_VERSION}
+#remove below after testing
+#ENV OBSIDIAN_VERSION ${OBSIDIAN_VERSION}
 
 RUN \
     echo "**** download obsidian ****" && \
