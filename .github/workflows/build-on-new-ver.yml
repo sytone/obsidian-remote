@@ -37,6 +37,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          build-args: OBSIDIAN_VERSON= ${{ steps.obver.outputs.OBVERSION }}
+          build-args: OBSIDIAN_VERSON=${{ steps.obver.outputs.OBVERSION }}
           push: true
           tags: ghcr.io/punchy98/obsidian-remote:latest
