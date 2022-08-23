@@ -2,10 +2,10 @@
 
 FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal
 
-LABEL org.opencontainers.image.authors="github@sytone.com"
-LABEL org.opencontainers.image.source="https://github.com/sytone/obsidian-remote"
-LABEL org.opencontainers.image.title="Container hosted Obsidian MD"
-LABEL org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
+LABEL org.opencontainers.image.authors="michael@maldonado.tech"
+LABEL org.opencontainers.image.source="https://github.com/punchy98/obsidian-remote"
+LABEL org.opencontainers.image.title="Containerized Obsidian instance"
+LABEL org.opencontainers.image.description="Containerized Obsidian instance"
 
 RUN \
     echo "**** install packages ****" && \
