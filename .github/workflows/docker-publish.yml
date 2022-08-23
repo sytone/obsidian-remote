@@ -35,4 +35,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: latest
+          tags: ghcr.io/punchy98/obsidian-remote:latest
