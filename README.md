@@ -13,7 +13,7 @@ docker run --rm -it `
   -v D:/ob/vaults:/vaults `
   -v D:/ob/config:/config `
   -p 8080:8080 `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/punchy98/obsidian-remote:latest
 ```
 
 To run it as a daemon in the background.
@@ -23,7 +23,7 @@ docker run -d `
   -v D:/ob/vaults:/vaults `
   -v D:/ob/config:/config `
   -p 8080:8080 `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/punchy98/obsidian-remote:latest
 ```
 
 ### Ports
@@ -57,7 +57,7 @@ docker run -d `
 version: '3.8'
 services:
   obsidian:
-    image: 'ghcr.io/sytone/obsidian-remote:latest'
+    image: 'ghcr.io/punchy98/obsidian-remote:latest'
     container_name: obsidian-remote
     restart: unless-stopped
     ports:
@@ -84,7 +84,7 @@ docker run -d `
   -v D:/ob/config:/config `
   -p 8080:8080 `
   -e DOCKER_MODS=linuxserver/mods:universal-git `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/punchy98/obsidian-remote:latest
 ```
 
 ## Reloading Obsidan in the Browser
@@ -104,7 +104,7 @@ docker run --rm -it `
   -e PUID=1000 `
   -e PGID=1000 `
   -p 8080:8080 `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/punchy98/obsidian-remote:latest
 ```
 
 Or, if you use docker-compose, add them to the environment: section:
