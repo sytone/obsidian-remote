@@ -89,9 +89,7 @@ docker run -d `
 
 ## Reloading Obsidan in the Browser
 
-If you make changes to plugins or do updates that need to have obsidian restarted, instead of having to stop and start the docker container you can just close the Obsidian UI and right click to show the menus and reopen it. Here is a short clip showing how to do it.
-
-![Reloading Obsidian in the Browser](./assets/ReloadExample.gif)
+If you make changes to plugins or do updates that need to have obsidian restarted, instead of having to stop and start the docker container you can just close the Obsidian UI and right click to show the menus and reopen it. 
 
 ## Setting PUID and PGID
 
