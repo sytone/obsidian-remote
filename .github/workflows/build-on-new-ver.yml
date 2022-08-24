@@ -6,8 +6,7 @@ name: build on new obsidian version
 # documentation.
 
 on:
-   repository_dispatch:
-      types: [script-build]
+   - workflow_dispatch
 
 
 jobs:
