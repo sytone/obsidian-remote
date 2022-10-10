@@ -24,7 +24,7 @@ RUN \
         /tmp/*
 
 # set version label
-ARG OBSIDIAN_VERSION=0.13.31
+ARG OBSIDIAN_VERSION=0.15.9
 
 RUN \
     echo "**** download obsidian ****" && \

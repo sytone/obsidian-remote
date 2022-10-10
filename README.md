@@ -4,6 +4,20 @@ This docker image allows you to run obsidian in docker as a container and access
 
 Use `http://localhost:8080/` to access it locally, do not expose this to the web unless you secure it and know what you are doing!!
 
+- [Using the Container](#using-the-container)
+  - [Ports](#ports)
+  - [Mapped Volumes](#mapped-volumes)
+  - [Environment Variables](#environment-variables)
+- [Using Docker Compose](#using-docker-compose)
+- [Enabling GIT for the obsidian-git plugin](#enabling-git-for-the-obsidian-git-plugin)
+  - [Docker CLI example](#docker-cli-example)
+- [Reloading Obsidan in the Browser](#reloading-obsidan-in-the-browser)
+- [Setting PUID and PGID](#setting-puid-and-pgid)
+- [Hosting behind a reverse proxy](#hosting-behind-a-reverse-proxy)
+  - [Example nginx configuration](#example-nginx-configuration)
+- [Updating Obsidian](#updating-obsidian)
+- [Building locally](#building-locally)
+
 ## Using the Container
 
 To run a interactive version to test it out. This is using windows based path, update for the OS you are running on.
@@ -43,13 +57,13 @@ docker run -d `
 
 ### Environment Variables
 
-| Environment Variable | Description                                                                                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| PUID                 | Set the user ID for the container user. `911` by default.                                                                                                                                              |
-| PGID                 | Set the group ID for the continer user. `911` by default.                                                                                                                                              |
-| TZ                   | Set the Time Zone for the container, should match your TZ. `Etc/UTC` by default. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options. |
-| DOCKER_MODS          | Use to add mods to the container like git. E.g. `DOCKER_MODS=linuxserver/mods:universal-git` See [Docker Mods](https://github.com/linuxserver/docker-mods) for details.                                |
-| KEYBOARD             | Used to se the keyboard being used for input. E.g. `KEYBOARD=en-us-qwerty` or `KEYBOARD=de-de-qwertz` a list of other possible values (not tested) can be found at https://github.com/linuxserver/docker-digikam#keyboard-layouts |
+| Environment Variable | Description                                                                                                                                                                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PUID                 | Set the user ID for the container user. `911` by default.                                                                                                                                                                           |
+| PGID                 | Set the group ID for the continer user. `911` by default.                                                                                                                                                                           |
+| TZ                   | Set the Time Zone for the container, should match your TZ. `Etc/UTC` by default. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options.                              |
+| DOCKER_MODS          | Use to add mods to the container like git. E.g. `DOCKER_MODS=linuxserver/mods:universal-git` See [Docker Mods](https://github.com/linuxserver/docker-mods) for details.                                                             |
+| KEYBOARD             | Used to se the keyboard being used for input. E.g. `KEYBOARD=en-us-qwerty` or `KEYBOARD=de-de-qwertz` a list of other possible values (not tested) can be found at <https://github.com/linuxserver/docker-digikam#keyboard-layouts> |
 
 ## Using Docker Compose
 
@@ -157,6 +171,10 @@ server {
   }
 }
 ```
+
+## Updating Obsidian
+
+By default obsidian will update itself in the container. If you recreate the container you will have to do the update again. This repo will be updated periodically to keep up with the latest version of Obsidian.
 
 ## Building locally
 
