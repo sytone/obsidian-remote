@@ -13,8 +13,12 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
   - [Docker CLI example](#docker-cli-example)
 - [Reloading Obsidan in the Browser](#reloading-obsidan-in-the-browser)
 - [Setting PUID and PGID](#setting-puid-and-pgid)
+- [Adding missing fonts](#adding-missing-fonts)
+  - [Map font file using Docker CLI](#map-font-file-using-docker-cli)
+  - [Map font file using Docker Compose](#map-font-file-using-docker-compose)
 - [Hosting behind a reverse proxy](#hosting-behind-a-reverse-proxy)
   - [Example nginx configuration](#example-nginx-configuration)
+- [Hosting behind Nginx Proxy Manager (NPM)](#hosting-behind-nginx-proxy-manager-npm)
 - [Updating Obsidian](#updating-obsidian)
 - [Building locally](#building-locally)
 
@@ -135,9 +139,28 @@ It is most likely that you will use the id of yourself, which can be obtained by
 id $user
 ```
 
+## Adding missing fonts
+
+Thanks to @aaron-jang for this example.
+
+Download the font of the language that you want to use in Obsidian and add it to the volume as shown below.
+
+### Map font file using Docker CLI
+
+```PowerShell
+  -v {downloaded font directory}:/usr/share/fonts/truetype/{font name}
+```
+
+### Map font file using Docker Compose
+
+```PowerShell
+    volumes:
+      - {downloaded font directory}:/usr/share/fonts/truetype/{font name}
+```
+
 ## Hosting behind a reverse proxy
 
-If you whish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled.
+If you wish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled.
 
 ### Example nginx configuration
 
@@ -171,6 +194,37 @@ server {
   }
 }
 ```
+
+## Hosting behind Nginx Proxy Manager (NPM)
+
+Thanks to @fahrenhe1t for this example.
+
+If you install obsidian-remote in Docker, you can proxy it through [Nginx Proxy Manager](https://nginxproxymanager.com/) (NPM - running on the same Docker instance), and use an access list to provide user authentication. The obsidian-remote container would have to be on the same network as Nginx Proxy Manager. If you don't expose the IP external to the container, authentication would be forced through NPM:
+
+```yaml
+version: '3.8'
+services:
+  obsidian:
+    image: 'ghcr.io/sytone/obsidian-remote:latest'
+    container_name: obsidian-remote
+    restart: unless-stopped
+    ports:
+      - 8080 #only exposes port internally to the container
+    volumes:
+      - /home/obsidian/vaults:/vaults
+      - /home/obsidian/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - DOCKER_MODS=linuxserver/mods:universal-git
+networks:
+  default:
+    name: <your nginx proxy manager network>
+    external: true
+```
+
+Create a proxy host in NPM pointing to the "obsidian-remote:8080" container, choose your domain name, use a LetsEncrypt SSL certificate, enable WebSockets. This video talks about it: [Nginx Proxy Manager - ACCESS LIST protection for internal services](https://www.youtube.com/watch?v=G9voYZejH48)
 
 ## Updating Obsidian
 

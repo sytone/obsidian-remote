@@ -21,6 +21,9 @@ echo "********************************"
 echo "**** Start Date Information ****"
 echo "********************************"
 echo "TZ: ${TZ}"
+echo "Running dpkg-reconfigure -f noninteractive tzdata"
+echo "${TZ}" >/etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
 echo "Date UTC"
 date --utc
 echo "Date Local"
