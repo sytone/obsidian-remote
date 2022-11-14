@@ -54,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: docker.amd64
+          file: dockerfile.amd64
           platforms: linux/amd64 #,linux/arm64,linux/arm/v7,linux/arm/v6, linux/386, linux/ppc64le,linux/s390x
           push: true
           tags: latest
@@ -64,7 +64,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: docker.arm64
+          file: dockerfile.arm64
           platforms: linux/arm64 #,linux/arm64,linux/arm/v7,linux/arm/v6, linux/386, linux/ppc64le,linux/s390x
           push: true
           tags: arm64
