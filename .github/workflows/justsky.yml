@@ -57,7 +57,7 @@ jobs:
           file: dockerfile.amd64
           platforms: linux/amd64 #,linux/arm64,linux/arm/v7,linux/arm/v6, linux/386, linux/ppc64le,linux/s390x
           push: true
-          tags: latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:latest
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker images
@@ -67,5 +67,5 @@ jobs:
           file: dockerfile.arm64
           platforms: linux/arm64 #,linux/arm64,linux/arm/v7,linux/arm/v6, linux/386, linux/ppc64le,linux/s390x
           push: true
-          tags: arm64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:arm64
           labels: ${{ steps.meta.outputs.labels }}
