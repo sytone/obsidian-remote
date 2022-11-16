@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - latest
+      - main
     paths-ignore:
       - 'README.MD'
       - '.github'
