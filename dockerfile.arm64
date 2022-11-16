@@ -20,13 +20,12 @@ RUN \
 
 # set version label
 ARG OBSIDIAN_VERSION=1.0.3
+ARG ARCH=arm64
 
 RUN \
     echo "**** download obsidian ****" && \
         curl \
-        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-1.0.3-arm64.AppImage \
-        -L \
-        -o obsidian.AppImage
+        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-1.0.3-arm64.AppImage  -o obsidian.AppImage
 
 RUN \
     echo "**** extract obsidian ****" && \
