@@ -1,0 +1,49 @@
+FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal
+RUN \
+    echo "**** install packages ****" && \
+        # Update and install extra packages.
+        apt-get update && \
+        apt-get install -y --no-install-recommends \
+            # Packages needed to download and extract obsidian.
+            curl \
+            libnss3 \
+            zlib1g-dev \
+            # Install Chrome dependencies.
+            dbus-x11 \
+            uuid-runtime && \
+    echo "**** cleanup ****" && \
+        apt-get autoclean && \
+        rm -rf \
+        /var/lib/apt/lists/* \
+        /var/tmp/* \
+        /tmp/*
+
+# set version label
+ARG OBSIDIAN_VERSION=1.0.3
+ARG ARCH=arm64
+
+RUN \
+    echo "**** download obsidian ****" && \
+        curl \
+        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-1.0.3-arm64.AppImage  -o obsidian.AppImage
+
+RUN \
+    echo "**** extract obsidian ****" && \
+        chmod +x /obsidian.AppImage && \
+        /obsidian.AppImage --appimage-extract
+
+ENV \
+    CUSTOM_PORT="8080" \
+    GUIAUTOSTART="true" \
+    HOME="/vaults" \
+    TITLE="Obsidian v$OBSIDIAN_VERSION"
+
+# add local files
+COPY root/ /
+
+EXPOSE 8080
+EXPOSE 27123
+EXPOSE 27124
+VOLUME ["/config","/vaults"]
+
+
