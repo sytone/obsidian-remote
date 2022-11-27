@@ -45,6 +45,16 @@ docker run -d `
   ghcr.io/sytone/obsidian-remote:latest
 ```
 
+The ARM container is now avaliable, will look to make this simpler in the future. The ARM imange is on the docker hub and not the github container registry. 
+
+```PowerShell
+docker run -d `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config `
+  -p 8080:8080 `
+  sytone/obsidian-remote:latest
+```
+
 ### Ports
 
 | Port  | Description                             |
