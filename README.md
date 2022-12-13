@@ -21,6 +21,7 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 - [Hosting behind Nginx Proxy Manager (NPM)](#hosting-behind-nginx-proxy-manager-npm)
 - [Updating Obsidian](#updating-obsidian)
 - [Building locally](#building-locally)
+- [Copy/Paste From External Source](#copypaste-from-external-source)
 
 ## Using the Container
 
@@ -42,6 +43,16 @@ docker run -d `
   -v D:/ob/config:/config `
   -p 8080:8080 `
   ghcr.io/sytone/obsidian-remote:latest
+```
+
+The ARM container is now avaliable, will look to make this simpler in the future. The ARM imange is on the docker hub and not the github container registry. 
+
+```PowerShell
+docker run -d `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config `
+  -p 8080:8080 `
+  sytone/obsidian-remote:latest
 ```
 
 ### Ports
@@ -250,3 +261,13 @@ docker run --rm -it `
   -p 8080:8080 `
   obsidian-remote:latest bash
 ```
+
+
+## Copy/Paste From External Source
+
+Click on the circle to the left side of your browser window. In there you will find a textbox for updating the remote clipboard or copying from it.
+
+![image](https://user-images.githubusercontent.com/1399443/202805847-a87e2c7c-a5c6-4dea-bbae-4b25b4b5866a.png)
+
+
+
