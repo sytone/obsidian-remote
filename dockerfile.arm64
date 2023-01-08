@@ -25,7 +25,7 @@ ARG ARCH=arm64
 RUN \
     echo "**** download obsidian ****" && \
         curl \
-        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-1.0.3-arm64.AppImage  -o obsidian.AppImage
+        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-1.1.9-arm64.AppImage  -o obsidian.AppImage
 
 RUN \
     echo "**** extract obsidian ****" && \
