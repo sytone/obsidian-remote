@@ -4,6 +4,8 @@ RUN \
         # Update and install extra packages.
         apt-get update && \
         apt-get install -y --no-install-recommends \
+            # Explicitly install git. Issue #36
+            git \        
             # Packages needed to download and extract obsidian.
             curl \
             libnss3 \
