@@ -19,7 +19,7 @@ RUN \
         /tmp/*
 
 # set version label
-ARG OBSIDIAN_VERSION=1.0.3
+ARG OBSIDIAN_VERSION=1.1.9
 ARG ARCH=arm64
 
 RUN \
