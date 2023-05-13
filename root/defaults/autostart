@@ -1,1 +1,1 @@
-/squashfs-root/obsidian --no-sandbox --disable-dev-shm-usage --disable-gpu --disable-software-rasterizer
+/usr/bin/obsidian --no-sandbox --disable-dev-shm-usage --disable-gpu --disable-software-rasterizer

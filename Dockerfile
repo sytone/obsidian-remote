@@ -1,9 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal
-
-LABEL org.opencontainers.image.authors="github@sytone.com"
-LABEL org.opencontainers.image.source="https://github.com/sytone/obsidian-remote"
-LABEL org.opencontainers.image.title="Container hosted Obsidian MD"
-LABEL org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbullseye
 
 RUN \
     echo "**** install packages ****" && \
@@ -12,10 +7,11 @@ RUN \
         apt-get install -y --no-install-recommends \
             # Packages needed to download and extract obsidian.
             curl \
-            libnss3 \
-            # Install Chrome dependencies.
-            dbus-x11 \
-            uuid-runtime && \
+            libgtk-3-0 \
+            libnotify4 \
+            libatspi2.0-0 \
+            libsecret-1-0 \
+            libnss3 && \
     echo "**** cleanup ****" && \
         apt-get autoclean && \
         rm -rf \
@@ -24,32 +20,22 @@ RUN \
         /tmp/*
 
 # set version label
-ARG OBSIDIAN_VERSION=0.15.9
+ARG OBSIDIAN_VERSION=1.1.16
 
-RUN \
-    echo "**** download obsidian ****" && \
-        curl \
-        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-$OBSIDIAN_VERSION.AppImage \
-        -L \
-        -o obsidian.AppImage
-
-RUN \
-    echo "**** extract obsidian ****" && \
-        chmod +x /obsidian.AppImage && \
-        /obsidian.AppImage --appimage-extract
+RUN dl_url="https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian_${OBSIDIAN_VERSION}_amd64.deb" && \
+    curl --location --output obsidian.deb "$dl_url" && \
+    dpkg -i obsidian.deb
 
 ENV \
     CUSTOM_PORT="8080" \
-    GUIAUTOSTART="true" \
-    HOME="/vaults" \
-    TITLE="Obsidian v$OBSIDIAN_VERSION"
+    TITLE="Obsidian v$OBSIDIAN_VERSION" \
+    FM_HOME="/vaults"
 
 # add local files
-COPY root/ /
+COPY /root /
 
 EXPOSE 8080
 EXPOSE 27123
 EXPOSE 27124
 VOLUME ["/config","/vaults"]
-
 
