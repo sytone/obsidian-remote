@@ -59,9 +59,8 @@ docker run -d `
 
 | Port  | Description                             |
 | ----- | --------------------------------------- |
-| 8080  | Obsidian Web Interface                  |
-| 27123 | Local REST API Plugin HTTP Server Port  |
-| 27124 | Local REST API Plugin HTTPS Server Port |
+| 8080  | HTTP Obsidian Web Interface             |
+| 8443  | HTTPS Obsidian Web Interface            |
 
 ### Mapped Volumes
 
@@ -79,11 +78,17 @@ docker run -d `
 | TZ                   | Set the Time Zone for the container, should match your TZ. `Etc/UTC` by default. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options.                              |
 | DOCKER_MODS          | Use to add mods to the container like git. E.g. `DOCKER_MODS=linuxserver/mods:universal-git` See [Docker Mods](https://github.com/linuxserver/docker-mods) for details.                                                             |
 | KEYBOARD             | Used to se the keyboard being used for input. E.g. `KEYBOARD=en-us-qwerty` or `KEYBOARD=de-de-qwertz` a list of other possible values (not tested) can be found at <https://github.com/linuxserver/docker-digikam#keyboard-layouts> |
+| CUSTOM_PORT          | Internal port the container listens on for http if it needs to be swapped from the default 3000.                                                                                                                                    |
+| CUSTOM_HTTPS_PORT    | Internal port the container listens on for https if it needs to be swapped from the default 3001.                                                                                                                                   |
+| CUSTOM_USER          | HTTP Basic auth username, abc is default.                                                                                                                                                                                           |
+| PASSWORD             | HTTP Basic auth password, abc is default. If unset there will be no auth                                                                                                                                                            |
+| SUBFOLDER            | Subfolder for the application if running a subfolder reverse proxy, need both slashes IE `/subfolder/`                                                                                                                              |
+| TITLE                | The page title displayed on the web browser, default "KasmVNC Client".                                                                                                                                                              |
+| FM_HOME              | This is the home directory (landing) for the file manager, default "/config".                                                                                                                                                       |
 
 ## Using Docker Compose
 
 ```YAML
-version: '3.8'
 services:
   obsidian:
     image: 'ghcr.io/sytone/obsidian-remote:latest'
@@ -91,6 +96,7 @@ services:
     restart: unless-stopped
     ports:
       - 8080:8080
+      - 8443:8443
     volumes:
       - /home/obsidian/vaults:/vaults
       - /home/obsidian/config:/config
@@ -99,6 +105,11 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
       - DOCKER_MODS=linuxserver/mods:universal-git
+      - CUSTOM_PORT="8080"
+      - CUSTOM_HTTPS_PORT="8443" 
+      - CUSTOM_USER=""
+      - PASSWORD=""
+      - SUBFOLDER=""
 ```
 
 ## Enabling GIT for the obsidian-git plugin
@@ -213,7 +224,6 @@ Thanks to @fahrenhe1t for this example.
 If you install obsidian-remote in Docker, you can proxy it through [Nginx Proxy Manager](https://nginxproxymanager.com/) (NPM - running on the same Docker instance), and use an access list to provide user authentication. The obsidian-remote container would have to be on the same network as Nginx Proxy Manager. If you don't expose the IP external to the container, authentication would be forced through NPM:
 
 ```yaml
-version: '3.8'
 services:
   obsidian:
     image: 'ghcr.io/sytone/obsidian-remote:latest'

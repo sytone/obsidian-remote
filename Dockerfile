@@ -1,55 +1,39 @@
-FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbullseye
 
-LABEL org.opencontainers.image.authors="github@sytone.com"
-LABEL org.opencontainers.image.source="https://github.com/sytone/obsidian-remote"
-LABEL org.opencontainers.image.title="Container hosted Obsidian MD"
-LABEL org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
+LABEL maintainer="github@sytone.com" \
+      org.opencontainers.image.authors="github@sytone.com" \
+      org.opencontainers.image.source="https://github.com/sytone/obsidian-remote" \
+      org.opencontainers.image.title="Container hosted Obsidian MD" \
+      org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
 
-RUN \
-    echo "**** install packages ****" && \
-        # Update and install extra packages.
-        apt-get update && \
-        apt-get install -y --no-install-recommends \
-            # Packages needed to download and extract obsidian.
-            curl \
-            libnss3 \
-            # Install Chrome dependencies.
-            dbus-x11 \
-            uuid-runtime && \
-    echo "**** cleanup ****" && \
-        apt-get autoclean && \
-        rm -rf \
-        /var/lib/apt/lists/* \
-        /var/tmp/* \
-        /tmp/*
+# Update and install extra packages.
+RUN echo "**** install packages ****" && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils && \
+    apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
-# set version label
-ARG OBSIDIAN_VERSION=0.15.9
+# Set version label
+ARG OBSIDIAN_VERSION=1.2.8
 
-RUN \
-    echo "**** download obsidian ****" && \
-        curl \
-        https://github.com/obsidianmd/obsidian-releases/releases/download/v$OBSIDIAN_VERSION/Obsidian-$OBSIDIAN_VERSION.AppImage \
-        -L \
-        -o obsidian.AppImage
+# Download and install Obsidian
+RUN echo "**** download obsidian ****" && \
+    curl --location --output obsidian.deb "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian_${OBSIDIAN_VERSION}_amd64.deb" && \
+    dpkg -i obsidian.deb
 
-RUN \
-    echo "**** extract obsidian ****" && \
-        chmod +x /obsidian.AppImage && \
-        /obsidian.AppImage --appimage-extract
+# Environment variables
+ENV CUSTOM_PORT="8080" \
+    CUSTOM_HTTPS_PORT="8443" \
+    CUSTOM_USER="" \
+    PASSWORD="" \
+    SUBFOLDER="" \
+    TITLE="Obsidian v${OBSIDIAN_VERSION}" \
+    FM_HOME="/vaults"
 
-ENV \
-    CUSTOM_PORT="8080" \
-    GUIAUTOSTART="true" \
-    HOME="/vaults" \
-    TITLE="Obsidian v$OBSIDIAN_VERSION"
-
-# add local files
+# Add local files
 COPY root/ /
 
-EXPOSE 8080
-EXPOSE 27123
-EXPOSE 27124
+EXPOSE 8080 8443
 VOLUME ["/config","/vaults"]
 
-
+# Define a healthcheck
+HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1

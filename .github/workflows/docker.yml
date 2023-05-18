@@ -52,7 +52,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: dockerfile.amd64
@@ -64,7 +64,7 @@ jobs:
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:buildcache_amd64,mode=max
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: dockerfile.arm64
