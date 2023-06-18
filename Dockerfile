@@ -9,11 +9,11 @@ LABEL maintainer="github@sytone.com" \
 # Update and install extra packages.
 RUN echo "**** install packages ****" && \
     apt-get update && \
-    apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils && \
+    apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils fonts-noto-color-emoji && \
     apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
 # Set version label
-ARG OBSIDIAN_VERSION=1.2.8
+ARG OBSIDIAN_VERSION=1.3.5
 
 # Download and install Obsidian
 RUN echo "**** download obsidian ****" && \
@@ -31,7 +31,6 @@ ENV CUSTOM_PORT="8080" \
 
 # Add local files
 COPY root/ /
-
 EXPOSE 8080 8443
 VOLUME ["/config","/vaults"]
 
