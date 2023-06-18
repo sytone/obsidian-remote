@@ -1,6 +1,6 @@
 FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal-20210824
 
-ARG OBSIDIAN_VERSION=1.2.8
+ARG OBSIDIAN_VERSION=1.3.5
 ARG ARCH=arm64
 
 # Update and install extra packages.
