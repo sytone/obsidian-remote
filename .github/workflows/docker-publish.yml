@@ -21,7 +21,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%S')"
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Docker meta
         id: meta
