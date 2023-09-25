@@ -9,7 +9,7 @@ LABEL maintainer="github@sytone.com" \
 # Update and install extra packages.
 RUN echo "**** install packages ****" && \
     apt-get update && \
-    apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils fonts-noto-color-emoji git && \
+    apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils fonts-noto-color-emoji git ssh-askpass && \
     apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
 # Set version label
