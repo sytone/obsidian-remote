@@ -1,4 +1,5 @@
-FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal-20210824
+# FROM ghcr.io/linuxserver/baseimage-rdesktop-web:focal-20210824
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbullseye
 
 ARG OBSIDIAN_VERSION=1.3.5
 ARG ARCH=arm64
