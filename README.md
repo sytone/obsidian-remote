@@ -150,6 +150,17 @@ cp .env.example .env
 
 Now edit your .env file and fill your Nextcloud credentials and informations.
 
+When starting your docker container, you'll have to mention en env-file
+
+```PowerShell
+docker run -d `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config `
+  -p 8080:8080 `
+  --env-file .env `
+  ghcr.io/sytone/obsidian-remote:latest
+```
+
 ### Trigger Sync
 
 The synchronization with Nextcloud is not automated because Obsidian frequently performs file save, which could result in frequent and potentially unnecessary synchronizations. To avoid network overload and minimize unnecessary traffic, the synchronization with Nextcloud is left to the user's discretion and must be done manually.
