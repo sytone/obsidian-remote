@@ -1,6 +1,6 @@
 # obsidian-remote
 
-This docker image allows you to run [obsidian](https://obsidian.md/) in docker as a container and access it via your web browser.
+This docker image allows you to run the latest version of [obsidian](https://obsidian.md/) in docker as a container and access it via your web browser.
 
 Use `http://localhost:8080/` to access it locally, do not expose this to the web unless you secure it and know what you are doing!!
 
@@ -12,6 +12,7 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 - [Enabling GIT for the obsidian-git plugin](#enabling-git-for-the-obsidian-git-plugin)
   - [Docker CLI example](#docker-cli-example)
 - [Reloading Obsidan in the Browser](#reloading-obsidan-in-the-browser)
+- [Nextcloud](#nextcloud)
 - [Setting PUID and PGID](#setting-puid-and-pgid)
 - [Adding missing fonts](#adding-missing-fonts)
   - [Map font file using Docker CLI](#map-font-file-using-docker-cli)
@@ -85,6 +86,10 @@ docker run -d `
 | SUBFOLDER            | Subfolder for the application if running a subfolder reverse proxy, need both slashes IE `/subfolder/`                                                                                                                              |
 | TITLE                | The page title displayed on the web browser, default "KasmVNC Client".                                                                                                                                                              |
 | FM_HOME              | This is the home directory (landing) for the file manager, default "/config".                                                                                                                                                       |
+| NC_USER              | Username for Nextcloud                                                                                                                                                       |
+| NC_PASS              | Password for Nextcloud                                                                                                                                                       |
+| NC_HOST              | Domain name of your Nextcloud instance E.g. nextcloud.mydomain.net                                                                                                                                                       |
+| NC_PATH              | Path where you store your md file on Nextcloud E.g. /Obsidian                                                                                                                                                       |
 
 ## Using Docker Compose
 
@@ -132,6 +137,26 @@ docker run -d `
 If you make changes to plugins or do updates that need to have obsidian restarted, instead of having to stop and start the docker container you can just close the Obsidian UI and right click to show the menus and reopen it. Here is a short clip showing how to do it.
 
 ![Reloading Obsidian in the Browser](./assets/ReloadExample.gif)
+
+## Nextcloud
+
+If you wish to store your MD files on your nextcloud instance, you can trigger a sync script.
+
+Please copy the .env.example file
+
+```
+cp .env.example .env
+```
+
+Now edit your .env file and fill your Nextcloud credentials and informations.
+
+### Trigger Sync
+
+The synchronization with Nextcloud is not automated because Obsidian frequently performs file save, which could result in frequent and potentially unnecessary synchronizations. To avoid network overload and minimize unnecessary traffic, the synchronization with Nextcloud is left to the user's discretion and must be done manually.
+
+This approach allows the user to control when the synchronization should take place, choosing appropriate moments when your work are done.
+
+You can trigger sync via right cliking on the desktop and choosing **Nextcloud Sync**
 
 ## Setting PUID and PGID
 
@@ -183,6 +208,7 @@ Download the font of the language that you want to use in Obsidian and add it to
 ## Hosting behind a reverse proxy
 
 If you wish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled.
+Even if you can set auth to reach the container, it's always a good practice to secure auth to the higher level. So it's better to set password auth via the reverse proxy rather than here.
 
 ### Example nginx configuration
 
@@ -249,7 +275,7 @@ Create a proxy host in NPM pointing to the "obsidian-remote:8080" container, cho
 
 ## Updating Obsidian
 
-By default obsidian will update itself in the container. If you recreate the container you will have to do the update again. This repo will be updated periodically to keep up with the latest version of Obsidian.
+When creating the container it download the latest version of obsidian.
 
 ## Building locally
 
@@ -275,9 +301,6 @@ docker run --rm -it `
 
 ## Copy/Paste From External Source
 
-Click on the circle to the left side of your browser window. In there you will find a textbox for updating the remote clipboard or copying from it.
-
-![image](https://user-images.githubusercontent.com/1399443/202805847-a87e2c7c-a5c6-4dea-bbae-4b25b4b5866a.png)
-
+Open the KasmVNC menu on the middle right and select clipboard
 
 
