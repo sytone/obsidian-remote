@@ -1,8 +1,8 @@
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbookworm
 
-LABEL maintainer="github@sytone.com" \
-      org.opencontainers.image.authors="github@sytone.com" \
-      org.opencontainers.image.source="https://github.com/sytone/obsidian-remote" \
+LABEL maintainer="drdada@github.com" \
+      org.opencontainers.image.authors="drdada@github.com" \
+      org.opencontainers.image.source="https://github.com/drdada/obsidian-remote" \
       org.opencontainers.image.title="Container hosted Obsidian MD" \
       org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
 
