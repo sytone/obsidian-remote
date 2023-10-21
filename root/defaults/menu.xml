@@ -6,13 +6,15 @@
                 <command>sudo /usr/bin/obsidian --no-sandbox</command>
             </action>
         </item>
+        <item label="Sync Nextcloud" icon="/usr/share/icons/hicolor/48x48/apps/Nextcloud.png">
+            <action name="Execute">
+                <command>xterm -e "bash /defaults/nextcloud.sh"</command>
+            </action>
+        </item>
         <item label="xterm" icon="/usr/share/pixmaps/xterm-color_48x48.xpm">
             <action name="Execute">
                 <command>/usr/bin/xterm</command>
             </action>
-        </item>
-        <item label="Reload OB">
-            <action name="Reconfigure" />
         </item>
     </menu>
 </openbox_menu>

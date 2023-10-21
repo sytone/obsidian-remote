@@ -1,0 +1,15 @@
+name: Docker image CI for GHCR
+
+on:
+  push
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build an push the image
+        run: |
+          docker login --username drdada --password ${{ secrets.GH_TOKEN }} ghcr.io
+          docker build . --tag ghcr.io/drdada/obsidian-remote:latest
+          docker push ghcr.io/drdada/obsidian-remote:latest

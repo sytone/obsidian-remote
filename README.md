@@ -1,8 +1,11 @@
 # obsidian-remote
 
-This docker image allows you to run [obsidian](https://obsidian.md/) in docker as a container and access it via your web browser.
+This docker image allows you to run the latest version of [obsidian](https://obsidian.md/) in docker as a container and access it via your web browser.
 
 Use `http://localhost:8080/` to access it locally, do not expose this to the web unless you secure it and know what you are doing!!
+
+**Note :** This is a fork of *sytone/obsidian-remote* project and i missed some features like Nextcloud Sync or auto downloading the latest obsidian version during build. Feel free to use the original if you don't need such feature.
+
 
 - [Using the Container](#using-the-container)
   - [Ports](#ports)
@@ -12,6 +15,7 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 - [Enabling GIT for the obsidian-git plugin](#enabling-git-for-the-obsidian-git-plugin)
   - [Docker CLI example](#docker-cli-example)
 - [Reloading Obsidan in the Browser](#reloading-obsidan-in-the-browser)
+- [Nextcloud](#nextcloud)
 - [Setting PUID and PGID](#setting-puid-and-pgid)
 - [Adding missing fonts](#adding-missing-fonts)
   - [Map font file using Docker CLI](#map-font-file-using-docker-cli)
@@ -22,6 +26,7 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 - [Updating Obsidian](#updating-obsidian)
 - [Building locally](#building-locally)
 - [Copy/Paste From External Source](#copypaste-from-external-source)
+- [Credits](#Credits)
 
 ## Using the Container
 
@@ -32,28 +37,18 @@ docker run --rm -it `
   -v D:/ob/vaults:/vaults `
   -v D:/ob/config:/config `
   -p 8080:8080 `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/drdada/obsidian-remote:latest
 ```
 
-To run it as a daemon in the background.
+Copy and fill the env file
 
 ```PowerShell
-docker run -d `
-  -v D:/ob/vaults:/vaults `
-  -v D:/ob/config:/config `
-  -p 8080:8080 `
-  ghcr.io/sytone/obsidian-remote:latest
+cp .env.example .env.local
 ```
 
-The ARM container is now avaliable, will look to make this simpler in the future. The ARM imange is on the docker hub and not the github container registry. 
+To run it as a daemon in the background, i recommand to do it via docker-compose (see below)
 
-```PowerShell
-docker run -d `
-  -v D:/ob/vaults:/vaults `
-  -v D:/ob/config:/config `
-  -p 8080:8080 `
-  sytone/obsidian-remote:latest
-```
+The ARM container is not available, feel free to use the sytone build.
 
 ### Ports
 
@@ -85,31 +80,27 @@ docker run -d `
 | SUBFOLDER            | Subfolder for the application if running a subfolder reverse proxy, need both slashes IE `/subfolder/`                                                                                                                              |
 | TITLE                | The page title displayed on the web browser, default "KasmVNC Client".                                                                                                                                                              |
 | FM_HOME              | This is the home directory (landing) for the file manager, default "/config".                                                                                                                                                       |
+| NC_USER              | Username for Nextcloud                                                                                                                                                       |
+| NC_PASS              | Password for Nextcloud                                                                                                                                                       |
+| NC_HOST              | Domain name of your Nextcloud instance (without protocol - https://) E.g. nextcloud.mydomain.net                                                                                                                                                       |
+| NC_PATH              | Path where you store your md file on Nextcloud E.g. /Obsidian                                                                                                                                                       |
 
-## Using Docker Compose
+## Using Docker Compose (Recommanded)
 
 ```YAML
+version: '3.6'
 services:
-  obsidian:
-    image: 'ghcr.io/sytone/obsidian-remote:latest'
-    container_name: obsidian-remote
-    restart: unless-stopped
+  obsidian-remote:
+    image: 'ghcr.io/drdada/obsidian-remote:latest'
+    env_file:
+      - .env.local
     ports:
-      - 8080:8080
-      - 8443:8443
+      - 8080
+      - 443
+    restart: unless-stopped
     volumes:
-      - /home/obsidian/vaults:/vaults
-      - /home/obsidian/config:/config
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
-      - DOCKER_MODS=linuxserver/mods:universal-git
-      - CUSTOM_PORT="8080"
-      - CUSTOM_HTTPS_PORT="8443" 
-      - CUSTOM_USER=""
-      - PASSWORD=""
-      - SUBFOLDER=""
+      - ./vaults:/vaults
+      - ./config:/config
 ```
 
 ## Enabling GIT for the obsidian-git plugin
@@ -124,7 +115,7 @@ docker run -d `
   -v D:/ob/config:/config `
   -p 8080:8080 `
   -e DOCKER_MODS=linuxserver/mods:universal-git `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/drdada/obsidian-remote:latest
 ```
 
 ## Reloading Obsidan in the Browser
@@ -132,6 +123,33 @@ docker run -d `
 If you make changes to plugins or do updates that need to have obsidian restarted, instead of having to stop and start the docker container you can just close the Obsidian UI and right click to show the menus and reopen it. Here is a short clip showing how to do it.
 
 ![Reloading Obsidian in the Browser](./assets/ReloadExample.gif)
+
+## Nextcloud
+
+If you wish to store your MD files on your nextcloud instance, you can trigger a sync script.
+
+Please make sure to copy the .env.local file
+
+Now edit your .env file and fill your Nextcloud credentials and informations.
+
+When starting your docker container, you'll have to mention en env-file
+
+```PowerShell
+docker run -d `
+  -v D:/ob/vaults:/vaults `
+  -v D:/ob/config:/config `
+  -p 8080:8080 `
+  --env-file .env.local `
+  ghcr.io/drdada/obsidian-remote:latest
+```
+
+### Trigger Sync
+
+The synchronization with Nextcloud is not automated because Obsidian frequently performs file save, which could result in frequent and potentially unnecessary synchronizations. To avoid network overload and minimize unnecessary traffic, the synchronization with Nextcloud is left to the user's discretion and must be done manually.
+
+This approach allows the user to control when the synchronization should take place, choosing appropriate moments when your work are done.
+
+You can trigger sync via right cliking on the desktop and choosing **Nextcloud Sync**
 
 ## Setting PUID and PGID
 
@@ -144,7 +162,7 @@ docker run --rm -it `
   -e PUID=1000 `
   -e PGID=1000 `
   -p 8080:8080 `
-  ghcr.io/sytone/obsidian-remote:latest
+  ghcr.io/drdada/obsidian-remote:latest
 ```
 
 Or, if you use docker-compose, add them to the environment: section:
@@ -182,7 +200,9 @@ Download the font of the language that you want to use in Obsidian and add it to
 
 ## Hosting behind a reverse proxy
 
+This is a danger zone ! Exposing this instance on the internet (even without a reverse proxy) increase security risk for your server.
 If you wish to do that **please make sure you are securing it in some way!**. You also need to ensure **websocket** support is enabled.
+Even if you can set auth to reach the container, it's always a good practice to secure auth to the higher level. So it's better to set password auth via the reverse proxy rather than here.
 
 ### Example nginx configuration
 
@@ -226,7 +246,7 @@ If you install obsidian-remote in Docker, you can proxy it through [Nginx Proxy 
 ```yaml
 services:
   obsidian:
-    image: 'ghcr.io/sytone/obsidian-remote:latest'
+    image: 'ghcr.io/drdada/obsidian-remote:latest'
     container_name: obsidian-remote
     restart: unless-stopped
     ports:
@@ -249,7 +269,7 @@ Create a proxy host in NPM pointing to the "obsidian-remote:8080" container, cho
 
 ## Updating Obsidian
 
-By default obsidian will update itself in the container. If you recreate the container you will have to do the update again. This repo will be updated periodically to keep up with the latest version of Obsidian.
+When creating the container it download the latest version of obsidian.
 
 ## Building locally
 
@@ -275,9 +295,10 @@ docker run --rm -it `
 
 ## Copy/Paste From External Source
 
-Click on the circle to the left side of your browser window. In there you will find a textbox for updating the remote clipboard or copying from it.
+Open the KasmVNC menu on the middle right and select clipboard
 
-![image](https://user-images.githubusercontent.com/1399443/202805847-a87e2c7c-a5c6-4dea-bbae-4b25b4b5866a.png)
+## Credits
 
+Thanks to the original author @sytone
 
 
