@@ -13,7 +13,7 @@ RUN echo "**** install packages ****" && \
     apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
 # Set version label
-ARG OBSIDIAN_VERSION=1.4.13
+ARG OBSIDIAN_VERSION=1.4.16
 
 # Download and install Obsidian
 RUN echo "**** download obsidian ****" && \
