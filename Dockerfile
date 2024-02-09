@@ -34,5 +34,8 @@ COPY root/ /
 EXPOSE 8080 8443
 VOLUME ["/config","/vaults"]
 
+# Remove sudo
+RUN rm /usr/bin/sudo
+
 # Define a healthcheck
 HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
