@@ -63,8 +63,8 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:buildcache_amd64
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:buildcache_amd64,mode=max
 
-     - name: Build and push Docker images
-       uses: docker/build-push-action@v5
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: Dockerfile.arm64
