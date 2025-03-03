@@ -26,7 +26,8 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 
 ## Using the Container
 
-To run a interactive version to test it out. This is using windows based path, update for the OS you are running on.
+### Windows based path
+To run a interactive version to test it out:
 
 ```PowerShell
 docker run --rm -it `
@@ -36,7 +37,7 @@ docker run --rm -it `
   ghcr.io/sytone/obsidian-remote:latest
 ```
 
-To run it as a daemon in the background.
+To run it as a daemon in the background:
 
 ```PowerShell
 docker run -d `
@@ -53,6 +54,40 @@ docker run -d `
   -v D:/ob/vaults:/vaults `
   -v D:/ob/config:/config `
   -p 8080:8080 `
+  sytone/obsidian-remote:latest
+```
+
+### Linux bash paths
+To run a interactive version to test it out:
+
+```bash
+mkdir -p ob/{vaults,config}
+docker run --rm -it \
+  -v ./ob/vaults:/vaults \
+  -v ./ob/config:/config \
+  -p 8080:8080 \
+  ghcr.io/sytone/obsidian-remote:latest
+```
+
+To run it as a daemon in the background:
+
+```bash
+mkdir -p ob/{vaults,config}
+docker run -d \
+  -v ./ob/vaults:/vaults \
+  -v ./ob/config:/config \
+  -p 8080:8080 \
+  ghcr.io/sytone/obsidian-remote:latest
+```
+
+The ARM container is now avaliable, will look to make this simpler in the future. The ARM imange is on the docker hub and not the github container registry. 
+
+```bash
+mkdir -p ob/{vaults,config}
+docker run -d \
+  -v ./ob/vaults:/vaults \
+  -v ./ob/config:/config \
+  -p 8080:8080 \
   sytone/obsidian-remote:latest
 ```
 
