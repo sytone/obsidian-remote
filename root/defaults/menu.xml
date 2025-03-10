@@ -3,7 +3,7 @@
     <menu id="root-menu" label="MENU">
         <item label="Obsidian" icon="/usr/share/icons/hicolor/48x48/apps/obsidian.png">
             <action name="Execute">
-                <command>sudo /usr/bin/obsidian --no-sandbox</command>
+                <command>/usr/bin/obsidian --no-sandbox</command>
             </action>
         </item>
         <item label="xterm" icon="/usr/share/pixmaps/xterm-color_48x48.xpm">
