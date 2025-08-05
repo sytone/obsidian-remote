@@ -54,7 +54,7 @@ docker run -d `
   -v D:/ob/vaults:/vaults `
   -v D:/ob/config:/config `
   -p 8080:8080 `
-  sytone/obsidian-remote:latest
+  sytone/obsidian-remote:arm64
 ```
 
 ### Linux bash paths
