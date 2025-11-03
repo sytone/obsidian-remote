@@ -23,6 +23,9 @@ RUN echo "**** download obsidian ****" && \
     curl -L -o ./obsidian.AppImage \
         "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}${FLAG:+-arm64}.AppImage" && \
     chmod +x ./obsidian.AppImage && \
+    # strip magic bytes for binfmt_misc
+    # https://github.com/AppImage/AppImageKit/issues/965
+    dd if=/dev/zero bs=1 count=3 seek=8 conv=notrunc of=obsidian.AppImage && \
     ./obsidian.AppImage --appimage-extract && \
     rm ./obsidian.AppImage
 
