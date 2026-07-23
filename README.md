@@ -47,7 +47,7 @@ docker run -d `
   ghcr.io/sytone/obsidian-remote:latest
 ```
 
-The ARM container is now avaliable, will look to make this simpler in the future. The ARM imange is on the docker hub and not the github container registry. 
+The ARM container is now avaliable, will look to make this simpler in the future. The ARM image is on the docker hub and not the github container registry. 
 
 ```PowerShell
 docker run -d `
@@ -80,7 +80,7 @@ docker run -d \
   ghcr.io/sytone/obsidian-remote:latest
 ```
 
-The ARM container is now avaliable, will look to make this simpler in the future. The ARM imange is on the docker hub and not the github container registry. 
+The ARM container is now avaliable, will look to make this simpler in the future. The ARM image is on the docker hub and not the github container registry. 
 
 ```bash
 mkdir -p ob/{vaults,config}
