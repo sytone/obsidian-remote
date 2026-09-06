@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build Docker image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Check out the repo
