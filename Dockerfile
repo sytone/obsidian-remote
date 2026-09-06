@@ -7,7 +7,7 @@ LABEL maintainer="github@sytone.com" \
       org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
 
 # Set version label
-ARG OBSIDIAN_VERSION=1.13.8
+ARG OBSIDIAN_VERSION=1.13.7
 
 # Update and install extra packages
 RUN echo "**** install packages ****" && \
