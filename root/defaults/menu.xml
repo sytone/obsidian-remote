@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
     <menu id="root-menu" label="MENU">
-        <item label="Obsidian" icon="/usr/share/icons/hicolor/48x48/apps/obsidian.png">
+        <item label="Obsidian" icon="/opt/Obsidian/usr/share/icons/hicolor/48x48/apps/obsidian.png">
             <action name="Execute">
-                <command>sudo /squashfs-root/obsidian --no-sandbox --no-xshm --disable-dev-shm-usage --disable-gpu --disable-software-rasterizer</command>
+                <command>sudo /opt/Obsidian/obsidian --no-sandbox --no-xshm --disable-dev-shm-usage --disable-gpu --disable-software-rasterizer</command>
             </action>
         </item>
         <item label="xterm" icon="/usr/share/pixmaps/xterm-color_48x48.xpm">
