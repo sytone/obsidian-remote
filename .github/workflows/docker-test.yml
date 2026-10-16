@@ -1,0 +1,81 @@
+name: Pull request Docker build and smoke test
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and smoke-test Docker images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: false
+
+      - name: Build amd64 image for smoke tests
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: obsidian-remote:ci
+
+      - name: Start container
+        run: |
+          docker run -d --name obsidian-remote-ci \
+            --shm-size=1g \
+            -p 8080:8080 \
+            -p 8443:8443 \
+            obsidian-remote:ci
+
+      - name: Verify container health and installation
+        run: |
+          set -eu
+          trap 'docker logs obsidian-remote-ci' EXIT
+          for attempt in $(seq 1 60); do
+            http_ready=false
+            if curl --fail --silent http://localhost:8080/ >/dev/null 2>&1; then
+              http_ready=true
+            fi
+            if [ "$http_ready" = true ] && \
+              docker exec obsidian-remote-ci test -x /opt/Obsidian/obsidian && \
+              docker exec obsidian-remote-ci test -f /config/.config/openbox/menu.xml && \
+              docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/menu.xml && \
+              docker exec obsidian-remote-ci test -f /config/.config/openbox/autostart && \
+              docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/autostart; then
+                break
+            fi
+            if [ "$attempt" = 60 ]; then
+              exit 1
+            fi
+            sleep 2
+          done
+          for attempt in $(seq 1 30); do
+            if docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' obsidian-remote-ci | grep -q healthy; then
+              exit 0
+            fi
+            if [ "$attempt" = 30 ]; then
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f obsidian-remote-ci
