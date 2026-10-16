@@ -1,4 +1,4 @@
-name: Docker build test
+name: Pull request Docker build and smoke test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build Docker image
+    name: Build and smoke-test Docker images
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,19 +48,33 @@ jobs:
         run: |
           set -eu
           trap 'docker logs obsidian-remote-ci' EXIT
+          for attempt in $(seq 1 60); do
+            http_ready=false
+            if curl --fail --silent http://localhost:8080/ >/dev/null 2>&1; then
+              http_ready=true
+            fi
+            if [ "$http_ready" = true ] && \
+              docker exec obsidian-remote-ci test -x /opt/Obsidian/obsidian && \
+              docker exec obsidian-remote-ci test -f /config/.config/openbox/menu.xml && \
+              docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/menu.xml && \
+              docker exec obsidian-remote-ci test -f /config/.config/openbox/autostart && \
+              docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/autostart; then
+                break
+            fi
+            if [ "$attempt" = 60 ]; then
+              exit 1
+            fi
+            sleep 2
+          done
           for attempt in $(seq 1 30); do
-            if curl --fail --silent http://localhost:8080/ >/dev/null; then
-              break
+            if docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' obsidian-remote-ci | grep -q healthy; then
+              exit 0
             fi
             if [ "$attempt" = 30 ]; then
               exit 1
             fi
             sleep 2
           done
-          docker exec obsidian-remote-ci test -x /opt/Obsidian/obsidian
-          docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/menu.xml
-          docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/autostart
-          docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' obsidian-remote-ci | grep -q healthy
 
       - name: Stop container
         if: always()

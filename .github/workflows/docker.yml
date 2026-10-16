@@ -1,4 +1,4 @@
-name: Docker
+name: Docker Hub image publish
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: build
+    name: Publish Docker Hub image
     runs-on: ubuntu-latest
 
     permissions:
