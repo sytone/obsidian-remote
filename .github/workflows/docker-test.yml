@@ -27,3 +27,41 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: false
+
+      - name: Build amd64 image for smoke tests
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: obsidian-remote:ci
+
+      - name: Start container
+        run: |
+          docker run -d --name obsidian-remote-ci \
+            --shm-size=1g \
+            -p 8080:8080 \
+            -p 8443:8443 \
+            obsidian-remote:ci
+
+      - name: Verify container health and installation
+        run: |
+          set -eu
+          trap 'docker logs obsidian-remote-ci' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:8080/ >/dev/null; then
+              break
+            fi
+            if [ "$attempt" = 30 ]; then
+              exit 1
+            fi
+            sleep 2
+          done
+          docker exec obsidian-remote-ci test -x /opt/Obsidian/obsidian
+          docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/menu.xml
+          docker exec obsidian-remote-ci grep -Fq '/opt/Obsidian/obsidian' /config/.config/openbox/autostart
+          docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' obsidian-remote-ci | grep -q healthy
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f obsidian-remote-ci
